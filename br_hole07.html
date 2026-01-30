@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hole 7 Renovation | Bass Rocks Golf Club</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@200;300;400&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-color: #ffffff;
+            --text-main: #1a1a1a;
+            --text-gray: #777777;
+            --nav-gray: #555555; 
+            --address-gray: #888888;
+            --akrobat-reg: 400;
+            --akrobat-light: 300;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: 'Barlow Semi Condensed', sans-serif;
+            overflow: hidden; 
+            height: 100vh;
+            width: 100vw;
+        }
+
+        .fixed-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-image: url('index/Topo_Whitinsville.jpg'); 
+            background-size: cover;
+            background-position: center;
+            z-index: -1;
+            opacity: 0.15; 
+            pointer-events: none;
+        }
+
+        /* --- LAYOUT WRAPPER --- */
+        .project-wrapper {
+            display: flex;
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+        }
+
+        /* --- LEFT PANEL (FIXED INFO) --- */
+        .info-panel {
+            width: 40%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            padding-top: 15vh; 
+            padding-left: 8vw;
+            padding-right: 4%;
+            z-index: 10;
+        }
+
+        .static-header {
+            margin-bottom: 3vh; 
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            font-weight: var(--akrobat-reg);
+            text-transform: uppercase;
+            letter-spacing: 0.1rem;
+            line-height: 0.9;
+            margin-bottom: 10px;
+        }
+
+        .location-sub {
+            font-size: 1.5rem; /* Larger for "Hole 7" */
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: var(--nav-gray);
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 10px;
+            display: inline-block;
+            width: fit-content;
+        }
+
+        .description-text {
+            font-weight: var(--akrobat-light);
+            color: var(--text-gray);
+            font-size: 1.1rem;
+            line-height: 1.6;
+            max-width: 450px;
+            margin-bottom: 40px;
+        }
+
+        /* --- TOGGLE NAVIGATION --- */
+        .toggle-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .toggle-link {
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--text-main);
+            text-decoration: none;
+            border-bottom: 1px solid transparent; /* Hidden by default */
+            width: fit-content;
+            cursor: pointer;
+            transition: color 0.3s ease, border-color 0.3s ease;
+            opacity: 0.6;
+        }
+
+        .toggle-link:hover {
+            opacity: 1;
+            color: var(--nav-gray);
+        }
+
+        .toggle-link.active {
+            opacity: 1;
+            border-bottom: 1px solid var(--text-main);
+        }
+
+        /* --- RIGHT PANEL (CONTENT DISPLAY) --- */
+        .display-panel {
+            width: 60%;
+            height: 100%;
+            position: relative;
+            padding: 10vh 5% 15vh 0; /* Padding to keep it off edges */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .content-section {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s ease-in-out;
+            padding: 0 5vw;
+        }
+
+        .content-section.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        /* Standard Images (Hero/Plans) */
+        .main-image {
+            max-width: 100%;
+            max-height: 70vh;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+            object-fit: contain;
+        }
+
+        /* Galleries */
+        .gallery-grid {
+            display: flex;
+            gap: 30px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .thumb-container {
+            width: 300px;
+            height: 200px;
+            overflow: hidden;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .thumb-container:hover {
+            transform: scale(1.03);
+        }
+
+        .thumb-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* --- LIGHTBOX --- */
+        .lightbox {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(255, 255, 255, 0.95);
+            z-index: 1500; /* Below Nav (2000) but above everything else */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .lightbox.open {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .lightbox-img {
+            max-width: 80vw;
+            max-height: 80vh;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 40px;
+            right: 40px;
+            font-size: 2rem;
+            color: var(--text-main);
+            cursor: pointer;
+            font-family: var(--akrobat-light);
+            transition: color 0.3s;
+        }
+        .close-btn:hover { color: var(--nav-gray); }
+
+
+        /* --- FIXED BOTTOM NAV --- */
+        .fixed-nav-container {
+            position: fixed;
+            bottom: 40px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            z-index: 2000;
+        }
+
+        .nav-links { display: flex; gap: 40px; list-style: none; }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--nav-gray);
+            font-size: 0.85rem;
+            font-weight: var(--akrobat-light);
+            letter-spacing: 0.2rem;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+        .nav-links a:hover { color: var(--text-main); }
+        .nav-address { color: var(--address-gray); font-size: 0.75rem; letter-spacing: 0.15rem; text-transform: uppercase; font-weight: var(--akrobat-light); }
+
+        /* RESPONSIVE */
+        @media (max-width: 900px) {
+            .project-wrapper { flex-direction: column; height: auto; overflow-y: auto; }
+            .info-panel { width: 100%; padding: 120px 5% 20px 5%; height: auto; }
+            .display-panel { width: 100%; padding: 20px 5%; height: 60vh; position: static; }
+            .content-section { position: relative; transform: none; top: auto; left: auto; opacity: 1; display: none; }
+            .content-section.active { display: flex; }
+            .gallery-grid { flex-direction: column; }
+            .thumb-container { width: 100%; height: 250px; }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="fixed-background"></div>
+
+    <div class="project-wrapper">
+        
+        <div class="info-panel">
+            <div class="static-header">
+                <h1>Bass Rocks<br>Golf Club</h1>
+                <span class="location-sub">Hole 7</span>
+            </div>
+            
+            <p class="description-text">
+                The project focused on lengthening the hole to meet modern standards while integrating natural rock formations to seamlessly blend with the course's rugged character. A completely reconstructed green complex now offers increased pin positions and strategic approach options.
+            </p>
+
+            <div class="toggle-nav">
+                <a class="toggle-link" onclick="switchSection('before')">Before Photos</a>
+                <a class="toggle-link" onclick="switchSection('plans')">Design Plans</a>
+                <a class="toggle-link" onclick="switchSection('construction')">Construction Photos</a>
+            </div>
+        </div>
+
+        <div class="display-panel">
+            
+            <div id="section-hero" class="content-section active">
+                <img src="Projects/Bass_Rocks/Image_BassRocks (8).jpg" alt="Hole 7 Overview" class="main-image">
+            </div>
+
+            <div id="section-before" class="content-section">
+                <div class="gallery-grid">
+                    <div class="thumb-container" onclick="openLightbox('Projects/Bass_Rocks/Image_BassRocks (8).jpg')">
+                        <img src="Projects/Bass_Rocks/Image_BassRocks (8).jpg" alt="Before View 1">
+                    </div>
+                    <div class="thumb-container" onclick="openLightbox('Projects/Bass_Rocks/Image_BassRocks (9).jpg')">
+                        <img src="Projects/Bass_Rocks/Image_BassRocks (9).jpg" alt="Before View 2">
+                    </div>
+                </div>
+            </div>
+
+            <div id="section-plans" class="content-section">
+                <img src="Projects/Bass_Rocks/BR_Hole07_Render_Sheet (3).jpg" alt="Hole 7 Render Sheet" class="main-image">
+            </div>
+
+            <div id="section-construction" class="content-section">
+                <div class="gallery-grid">
+                    <div class="thumb-container" onclick="openLightbox('Projects/Bass_Rocks/BR_Hole_07_Construction (1).JPG')">
+                        <img src="Projects/Bass_Rocks/BR_Hole_07_Construction (1).JPG" alt="Construction 1">
+                    </div>
+                    <div class="thumb-container" onclick="openLightbox('Projects/Bass_Rocks/BR_Hole_07_Construction (2).JPG')">
+                        <img src="Projects/Bass_Rocks/BR_Hole_07_Construction (2).JPG" alt="Construction 2">
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div id="lightbox" class="lightbox">
+        <div class="close-btn" onclick="closeLightbox()">&#10005;</div>
+        <img id="lightbox-image" src="" alt="Enlarged View" class="lightbox-img">
+    </div>
+
+    <div class="fixed-nav-container">
+        <nav>
+            <ul class="nav-links">
+                <li><a href="#" onclick="navigateTo(event, 'start')">Start</a></li>
+                <li><a href="#" onclick="navigateTo(event, 'what-we-do')">What We Do</a></li>
+                <li><a href="#" onclick="navigateTo(event, 'team-intro')">Team</a></li>
+                <li><a href="#" onclick="navigateTo(event, 'projects-section')">Projects</a></li>
+                <li><a href="#" onclick="navigateTo(event, 'contact')">Contact</a></li>
+            </ul>
+        </nav>
+        <div class="nav-address">THE NORTHEAST GOLF COMPANY, 118 SAUNDERSTOWN, RHODE ISLAND 02874</div>
+    </div>
+
+    <script>
+        // 1. Navigation Helper
+        function navigateTo(e, sectionId) {
+            e.preventDefault(); 
+            sessionStorage.setItem('scrollTarget', sectionId);
+            window.location.href = 'index.html';
+        }
+
+        // 2. Section Switching Logic
+        function switchSection(sectionName) {
+            // Hide all sections
+            document.querySelectorAll('.content-section').forEach(el => {
+                el.classList.remove('active');
+            });
+
+            // Remove active underline from all links
+            document.querySelectorAll('.toggle-link').forEach(el => {
+                el.classList.remove('active');
+            });
+
+            // Show selected section
+            const target = document.getElementById('section-' + sectionName);
+            if (target) {
+                target.classList.add('active');
+            }
+
+            // Highlight clicked link
+            // Note: This matches the onClick text. 
+            // A more robust way is passing 'this' but simple text matching works for now.
+            const links = document.querySelectorAll('.toggle-link');
+            if (sectionName === 'before') links[0].classList.add('active');
+            if (sectionName === 'plans') links[1].classList.add('active');
+            if (sectionName === 'construction') links[2].classList.add('active');
+        }
+
+        // 3. Lightbox Logic
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightbox-image');
+
+        function openLightbox(imageSrc) {
+            lightboxImg.src = imageSrc;
+            lightbox.classList.add('open');
+        }
+
+        function closeLightbox() {
+            lightbox.classList.remove('open');
+            setTimeout(() => {
+                lightboxImg.src = ""; // Clear source after fade out
+            }, 300);
+        }
+
+        // Close lightbox on clicking outside image
+        lightbox.addEventListener('click', (e) => {
+            if (e.target === lightbox) {
+                closeLightbox();
+            }
+        });
+
+    </script>
+
+</body>
+</html>
