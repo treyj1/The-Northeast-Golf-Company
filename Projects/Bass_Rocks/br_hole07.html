@@ -370,11 +370,11 @@
     </div>
 
     <script>
-        // 1. Navigation Helper
+        // 1. Navigation Helper - Fixed to go up two levels
         function navigateTo(e, sectionId) {
             e.preventDefault(); 
             sessionStorage.setItem('scrollTarget', sectionId);
-            window.location.href = 'index.html';
+            window.location.href = '../../index.html';
         }
 
         // 2. Main Section Switching
