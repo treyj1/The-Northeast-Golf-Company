@@ -19,11 +19,7 @@
             --akrobat-light: 300;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             background-color: var(--bg-color);
@@ -35,239 +31,200 @@
         }
 
         .fixed-background {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
             background-image: url('index/Topo_Whitinsville.jpg'); 
-            background-size: cover;
-            background-position: center;
-            z-index: -1;
-            opacity: 0.15; 
-            pointer-events: none;
+            background-size: cover; background-position: center;
+            z-index: -1; opacity: 0.15; pointer-events: none;
         }
 
         /* --- LAYOUT WRAPPER --- */
         .project-wrapper {
-            display: flex;
-            width: 100vw;
-            height: 100vh;
-            position: relative;
+            display: flex; width: 100vw; height: 100vh; position: relative;
         }
 
-        /* --- LEFT PANEL (FIXED INFO) --- */
+        /* --- LEFT PANEL --- */
         .info-panel {
-            width: 40%;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            padding-top: 15vh; 
-            padding-left: 8vw;
-            padding-right: 4%;
-            z-index: 10;
+            width: 40%; height: 100%; display: flex; flex-direction: column;
+            padding-top: 15vh; padding-left: 8vw; padding-right: 4%; z-index: 10;
         }
 
-        .static-header {
-            margin-bottom: 3vh; 
-        }
+        .static-header { margin-bottom: 3vh; }
 
         h1 {
-            font-size: 3.5rem;
-            font-weight: var(--akrobat-reg);
-            text-transform: uppercase;
-            letter-spacing: 0.1rem;
-            line-height: 0.9;
-            margin-bottom: 10px;
+            font-size: 3.5rem; font-weight: var(--akrobat-reg);
+            text-transform: uppercase; letter-spacing: 0.1rem;
+            line-height: 0.9; margin-bottom: 10px;
         }
 
         .location-sub {
-            font-size: 1.5rem; /* Larger for "Hole 7" */
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            color: var(--nav-gray);
-            border-bottom: 1px solid #ddd;
-            padding-bottom: 10px;
-            display: inline-block;
-            width: fit-content;
+            font-size: 1.5rem; text-transform: uppercase; letter-spacing: 3px;
+            color: var(--nav-gray); border-bottom: 1px solid #ddd;
+            padding-bottom: 10px; display: inline-block; width: fit-content;
         }
 
         .description-text {
-            font-weight: var(--akrobat-light);
-            color: var(--text-gray);
-            font-size: 1.1rem;
-            line-height: 1.6;
-            max-width: 450px;
-            margin-bottom: 40px;
+            font-weight: var(--akrobat-light); color: var(--text-gray);
+            font-size: 1.1rem; line-height: 1.6; max-width: 450px; margin-bottom: 40px;
         }
 
         /* --- TOGGLE NAVIGATION --- */
-        .toggle-nav {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            margin-top: 20px;
-        }
+        .toggle-nav { display: flex; flex-direction: column; gap: 15px; margin-top: 20px; }
 
         .toggle-link {
-            font-size: 1rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            color: var(--text-main);
-            text-decoration: none;
-            border-bottom: 1px solid transparent; /* Hidden by default */
-            width: fit-content;
-            cursor: pointer;
-            transition: color 0.3s ease, border-color 0.3s ease;
-            opacity: 0.6;
+            font-size: 1rem; text-transform: uppercase; letter-spacing: 2px;
+            color: var(--text-main); text-decoration: none;
+            border-bottom: 1px solid var(--text-main); /* Always Underlined */
+            width: fit-content; cursor: pointer;
+            transition: color 0.3s ease, opacity 0.3s ease;
+            opacity: 0.6; padding-bottom: 2px;
         }
 
-        .toggle-link:hover {
-            opacity: 1;
-            color: var(--nav-gray);
-        }
+        .toggle-link:hover { opacity: 1; color: var(--nav-gray); }
+        .toggle-link.active { opacity: 1; border-bottom: 2px solid var(--text-main); font-weight: 400; }
 
-        .toggle-link.active {
-            opacity: 1;
-            border-bottom: 1px solid var(--text-main);
-        }
-
-        /* --- RIGHT PANEL (CONTENT DISPLAY) --- */
+        /* --- RIGHT PANEL --- */
         .display-panel {
-            width: 60%;
-            height: 100%;
-            position: relative;
-            padding: 10vh 5% 15vh 0; /* Padding to keep it off edges */
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            width: 60%; height: 100%; position: relative;
+            padding: 10vh 5% 15vh 0; 
+            display: flex; justify-content: center; align-items: center;
         }
 
         .content-section {
-            position: absolute;
-            top: 50%;
-            left: 50%;
+            position: absolute; top: 50%; left: 50%;
             transform: translate(-50%, -50%);
-            width: 100%;
-            height: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            opacity: 0;
-            pointer-events: none;
+            width: 100%; height: 100%;
+            display: flex; flex-direction: column; 
+            justify-content: center; align-items: center;
+            opacity: 0; pointer-events: none;
             transition: opacity 0.5s ease-in-out;
             padding: 0 5vw;
         }
+        .content-section.active { opacity: 1; pointer-events: auto; }
 
-        .content-section.active {
-            opacity: 1;
-            pointer-events: auto;
-        }
-
-        /* Standard Images (Hero/Plans) */
         .main-image {
-            max-width: 100%;
-            max-height: 70vh;
+            max-width: 100%; max-height: 65vh;
             box-shadow: 0 15px 30px rgba(0,0,0,0.1);
             object-fit: contain;
         }
 
-        /* Galleries */
-        .gallery-grid {
-            display: flex;
-            gap: 30px;
-            justify-content: center;
-            flex-wrap: wrap;
+        /* --- PLANS SUB-NAVIGATION --- */
+        .plans-nav-container {
+            margin-top: 15px;
+            width: 100%; max-width: 800px;
+            display: flex; justify-content: flex-end; /* Aligns to right of center */
+            padding-right: 10%; /* Adjust to position "just right of center" */
+            min-height: 30px;
         }
 
-        .thumb-container {
-            width: 300px;
-            height: 200px;
+        .plans-nav-btn {
+            font-size: 0.9rem; text-transform: uppercase; letter-spacing: 2px;
+            color: var(--nav-gray); cursor: pointer;
+            transition: color 0.3s ease, opacity 0.3s ease;
+            display: flex; align-items: center; gap: 8px;
+            user-select: none;
+        }
+        .plans-nav-btn:hover { color: var(--text-main); }
+        .plans-nav-btn.hidden { opacity: 0; pointer-events: none; }
+
+        /* --- SLIDER STYLES --- */
+        .slider-wrapper {
+            position: relative;
+            width: 100%; max-width: 900px;
+            aspect-ratio: 16 / 9; /* Adjust based on your images */
+            max-height: 65vh;
             overflow: hidden;
-            cursor: pointer;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            transition: transform 0.3s ease;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+            user-select: none;
         }
 
-        .thumb-container:hover {
-            transform: scale(1.03);
-        }
-
-        .thumb-container img {
-            width: 100%;
-            height: 100%;
+        .slider-image {
+            position: absolute; top: 0; left: 0;
+            width: 100%; height: 100%;
             object-fit: cover;
         }
 
+        /* The "After/Proposed" image is the background base. 
+           The "Before" image sits on top and is clipped. */
+        .img-overlay {
+            position: absolute; top: 0; left: 0;
+            width: 100%; height: 100%;
+            overflow: hidden;
+            width: 50%; /* Initial state */
+            border-right: 2px solid #fff;
+        }
+        
+        /* Drag Handle */
+        .slider-handle {
+            position: absolute; top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 40px; height: 40px;
+            background: rgba(255,255,255,0.9);
+            border-radius: 50%;
+            cursor: ew-resize;
+            box-shadow: 0 0 10px rgba(0,0,0,0.3);
+            display: flex; justify-content: center; align-items: center;
+            z-index: 20;
+        }
+        .slider-handle::after {
+            content: '\2194'; /* Left-Right Arrow */
+            color: var(--text-main); font-size: 1.2rem;
+        }
+
+        /* Tags */
+        .slider-tag {
+            position: absolute; bottom: 20px;
+            padding: 5px 15px;
+            background: rgba(0,0,0,0.6);
+            color: #fff;
+            text-transform: uppercase; letter-spacing: 1px;
+            font-size: 0.8rem;
+            pointer-events: none;
+            transition: opacity 0.4s ease;
+            opacity: 0;
+        }
+        .tag-left { left: 20px; }
+        .tag-right { right: 20px; }
+        .tag-visible { opacity: 1; }
+
+        /* --- GALLERIES --- */
+        .gallery-grid { display: flex; gap: 30px; justify-content: center; flex-wrap: wrap; }
+        .thumb-container {
+            width: 300px; height: 200px; overflow: hidden; cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+        .thumb-container:hover { transform: scale(1.03); }
+        .thumb-container img { width: 100%; height: 100%; object-fit: cover; }
+
         /* --- LIGHTBOX --- */
         .lightbox {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
             background: rgba(255, 255, 255, 0.95);
-            z-index: 1500; /* Below Nav (2000) but above everything else */
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s ease;
+            z-index: 1500; display: flex; justify-content: center; align-items: center;
+            opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
         }
-
-        .lightbox.open {
-            opacity: 1;
-            pointer-events: auto;
-        }
-
-        .lightbox-img {
-            max-width: 80vw;
-            max-height: 80vh;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
-        }
-
+        .lightbox.open { opacity: 1; pointer-events: auto; }
+        .lightbox-img { max-width: 80vw; max-height: 80vh; box-shadow: 0 20px 40px rgba(0,0,0,0.2); }
         .close-btn {
-            position: absolute;
-            top: 40px;
-            right: 40px;
-            font-size: 2rem;
-            color: var(--text-main);
-            cursor: pointer;
-            font-family: var(--akrobat-light);
+            position: absolute; top: 40px; right: 40px; font-size: 2rem;
+            color: var(--text-main); cursor: pointer; font-family: var(--akrobat-light);
             transition: color 0.3s;
         }
-        .close-btn:hover { color: var(--nav-gray); }
-
 
         /* --- FIXED BOTTOM NAV --- */
         .fixed-nav-container {
-            position: fixed;
-            bottom: 40px;
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 12px;
-            z-index: 2000;
+            position: fixed; bottom: 40px; width: 100%;
+            display: flex; flex-direction: column; align-items: center; gap: 12px; z-index: 2000;
         }
-
         .nav-links { display: flex; gap: 40px; list-style: none; }
-
         .nav-links a {
-            text-decoration: none;
-            color: var(--nav-gray);
-            font-size: 0.85rem;
-            font-weight: var(--akrobat-light);
-            letter-spacing: 0.2rem;
-            text-transform: uppercase;
-            cursor: pointer;
-            transition: color 0.3s ease;
+            text-decoration: none; color: var(--nav-gray); font-size: 0.85rem;
+            font-weight: var(--akrobat-light); letter-spacing: 0.2rem;
+            text-transform: uppercase; cursor: pointer; transition: color 0.3s ease;
         }
         .nav-links a:hover { color: var(--text-main); }
         .nav-address { color: var(--address-gray); font-size: 0.75rem; letter-spacing: 0.15rem; text-transform: uppercase; font-weight: var(--akrobat-light); }
 
-        /* RESPONSIVE */
         @media (max-width: 900px) {
             .project-wrapper { flex-direction: column; height: auto; overflow-y: auto; }
             .info-panel { width: 100%; padding: 120px 5% 20px 5%; height: auto; }
@@ -293,7 +250,7 @@
             </div>
             
             <p class="description-text">
-                The project focused on lengthening the hole to meet modern standards while integrating natural rock formations to seamlessly blend with the course's rugged character. A completely reconstructed green complex now offers increased pin positions and strategic approach options.
+                The project emphasized the complete reconstruction of the green complex to offer increased pin positions and strategic approach options. It also involved lengthening the hole to meet modern standards while integrating natural rock formations to seamlessly blend with the course's rugged character.
             </p>
 
             <div class="toggle-nav">
@@ -321,16 +278,43 @@
             </div>
 
             <div id="section-plans" class="content-section">
-                <img src="Projects/Bass_Rocks/BR_Hole07_Render_Sheet (3).jpg" alt="Hole 7 Render Sheet" class="main-image">
+                
+                <div id="plan-view-sheet" class="plan-sub-view" style="width: 100%; display: flex; justify-content: center;">
+                    <img src="Projects/Bass_Rocks/BR_Hole07_Render_Sheet (3).jpg" alt="Hole 7 Render Sheet" class="main-image">
+                </div>
+
+                <div id="plan-view-slider" class="plan-sub-view" style="width: 100%; display: none; justify-content: center; position: relative;">
+                    <div class="slider-wrapper" id="slider">
+                        <img src="Projects/Bass_Rocks/BR_Hole07_Render_BirdsEye_After (1).jpg" class="slider-image">
+                        <div class="slider-tag tag-right" id="tag-proposed">Proposed</div>
+                        
+                        <div class="img-overlay" id="img-overlay">
+                            <img src="Projects/Bass_Rocks/BR_Hole07_Render_BirdsEye_Before (2).jpg" class="slider-image" style="width: auto; max-width: none; height: 100%;">
+                            <div class="slider-tag tag-left" id="tag-before">Before</div>
+                        </div>
+
+                        <div class="slider-handle" id="slider-handle"></div>
+                    </div>
+                </div>
+
+                <div class="plans-nav-container">
+                    <div id="plan-back" class="plans-nav-btn hidden" onclick="togglePlanView('sheet')">
+                        &#8592; Back
+                    </div>
+                    <div id="plan-next" class="plans-nav-btn" onclick="togglePlanView('slider')">
+                        Next &#8594;
+                    </div>
+                </div>
+
             </div>
 
             <div id="section-construction" class="content-section">
                 <div class="gallery-grid">
-                    <div class="thumb-container" onclick="openLightbox('Projects/Bass_Rocks/BR_Hole_07_Construction (1).jpg')">
-                        <img src="Projects/Bass_Rocks/BR_Hole_07_Construction (1).jpg" alt="Construction 1">
+                    <div class="thumb-container" onclick="openLightbox('Projects/Bass_Rocks/BR_Hole_07_Construction (1).JPG')">
+                        <img src="Projects/Bass_Rocks/BR_Hole_07_Construction (1).JPG" alt="Construction 1">
                     </div>
-                    <div class="thumb-container" onclick="openLightbox('Projects/Bass_Rocks/BR_Hole_07_Construction (2).jpg')">
-                        <img src="Projects/Bass_Rocks/BR_Hole_07_Construction (2).jpg" alt="Construction 2">
+                    <div class="thumb-container" onclick="openLightbox('Projects/Bass_Rocks/BR_Hole_07_Construction (2).JPG')">
+                        <img src="Projects/Bass_Rocks/BR_Hole_07_Construction (2).JPG" alt="Construction 2">
                     </div>
                 </div>
             </div>
@@ -364,34 +348,128 @@
             window.location.href = 'index.html';
         }
 
-        // 2. Section Switching Logic
+        // 2. Main Section Switching
         function switchSection(sectionName) {
-            // Hide all sections
-            document.querySelectorAll('.content-section').forEach(el => {
-                el.classList.remove('active');
-            });
+            document.querySelectorAll('.content-section').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.toggle-link').forEach(el => el.classList.remove('active'));
 
-            // Remove active underline from all links
-            document.querySelectorAll('.toggle-link').forEach(el => {
-                el.classList.remove('active');
-            });
-
-            // Show selected section
             const target = document.getElementById('section-' + sectionName);
-            if (target) {
-                target.classList.add('active');
-            }
+            if (target) target.classList.add('active');
 
-            // Highlight clicked link
-            // Note: This matches the onClick text. 
-            // A more robust way is passing 'this' but simple text matching works for now.
             const links = document.querySelectorAll('.toggle-link');
             if (sectionName === 'before') links[0].classList.add('active');
             if (sectionName === 'plans') links[1].classList.add('active');
             if (sectionName === 'construction') links[2].classList.add('active');
+            
+            // Reset Plans View to default if leaving/returning
+            if(sectionName !== 'plans') {
+                setTimeout(() => togglePlanView('sheet', false), 500);
+            }
         }
 
-        // 3. Lightbox Logic
+        // 3. Plan Sub-View Switching (Sheet vs Slider)
+        function togglePlanView(view, animate = true) {
+            const sheet = document.getElementById('plan-view-sheet');
+            const slider = document.getElementById('plan-view-slider');
+            const nextBtn = document.getElementById('plan-next');
+            const backBtn = document.getElementById('plan-back');
+
+            // Quick fade logic
+            if (animate) {
+                sheet.style.opacity = '0';
+                slider.style.opacity = '0';
+            }
+
+            setTimeout(() => {
+                if (view === 'slider') {
+                    sheet.style.display = 'none';
+                    slider.style.display = 'flex';
+                    nextBtn.classList.add('hidden');
+                    backBtn.classList.remove('hidden');
+                    // Recalculate slider width in case of resize
+                    updateSliderWidth(); 
+                } else {
+                    sheet.style.display = 'flex';
+                    slider.style.display = 'none';
+                    nextBtn.classList.remove('hidden');
+                    backBtn.classList.add('hidden');
+                }
+
+                if (animate) {
+                    setTimeout(() => {
+                        sheet.style.transition = 'opacity 0.5s';
+                        slider.style.transition = 'opacity 0.5s';
+                        sheet.style.opacity = '1';
+                        slider.style.opacity = '1';
+                    }, 50);
+                }
+            }, animate ? 300 : 0);
+        }
+
+        // 4. Slider Logic
+        const sliderWrapper = document.getElementById('slider');
+        const overlay = document.getElementById('img-overlay');
+        const handle = document.getElementById('slider-handle');
+        const overlayImg = overlay.querySelector('img');
+        const tagBefore = document.getElementById('tag-before');
+        const tagProposed = document.getElementById('tag-proposed');
+        
+        let isDragging = false;
+
+        function updateSliderWidth() {
+            // Keep the inner image full width even when container clips
+            overlayImg.style.width = sliderWrapper.offsetWidth + 'px'; 
+        }
+
+        function setSliderPosition(x) {
+            const rect = sliderWrapper.getBoundingClientRect();
+            let pos = x - rect.left;
+            
+            // Bounds
+            if (pos < 0) pos = 0;
+            if (pos > rect.width) pos = rect.width;
+
+            const percentage = (pos / rect.width) * 100;
+
+            overlay.style.width = percentage + "%";
+            handle.style.left = percentage + "%";
+
+            // Tag Logic:
+            // > 50% means Before Image (Overlay) covers more than half
+            if (percentage > 50) {
+                tagBefore.classList.add('tag-visible');
+                tagProposed.classList.remove('tag-visible');
+            } else {
+                tagBefore.classList.remove('tag-visible');
+                tagProposed.classList.add('tag-visible');
+            }
+        }
+
+        // Mouse Events
+        handle.addEventListener('mousedown', () => isDragging = true);
+        window.addEventListener('mouseup', () => isDragging = false);
+        window.addEventListener('mousemove', (e) => {
+            if (!isDragging) return;
+            setSliderPosition(e.clientX);
+        });
+
+        // Touch Events
+        handle.addEventListener('touchstart', () => isDragging = true);
+        window.addEventListener('touchend', () => isDragging = false);
+        window.addEventListener('touchmove', (e) => {
+            if (!isDragging) return;
+            setSliderPosition(e.touches[0].clientX);
+        });
+
+        // Init Slider width on load
+        window.addEventListener('resize', updateSliderWidth);
+        // Set initial state (50%)
+        window.onload = () => {
+             updateSliderWidth();
+             setSliderPosition(sliderWrapper.getBoundingClientRect().width / 2 + sliderWrapper.getBoundingClientRect().left);
+        };
+
+        // 5. Lightbox Logic
         const lightbox = document.getElementById('lightbox');
         const lightboxImg = document.getElementById('lightbox-image');
 
@@ -402,17 +480,9 @@
 
         function closeLightbox() {
             lightbox.classList.remove('open');
-            setTimeout(() => {
-                lightboxImg.src = ""; // Clear source after fade out
-            }, 300);
+            setTimeout(() => lightboxImg.src = "", 300);
         }
-
-        // Close lightbox on clicking outside image
-        lightbox.addEventListener('click', (e) => {
-            if (e.target === lightbox) {
-                closeLightbox();
-            }
-        });
+        lightbox.addEventListener('click', (e) => { if (e.target === lightbox) closeLightbox(); });
 
     </script>
 
