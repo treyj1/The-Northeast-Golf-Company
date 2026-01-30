@@ -46,6 +46,7 @@
         .info-panel {
             width: 40%; height: 100%; display: flex; flex-direction: column;
             padding-top: 15vh; padding-left: 8vw; padding-right: 4%; z-index: 10;
+            position: relative; /* For absolute positioning of back link */
         }
 
         .static-header { margin-bottom: 3vh; }
@@ -81,6 +82,25 @@
 
         .toggle-link:hover { opacity: 1; color: var(--nav-gray); }
         .toggle-link.active { opacity: 1; border-bottom: 2px solid var(--text-main); font-weight: 400; }
+
+        /* --- BACK LINK (Bottom Left) --- */
+        .back-link-corner {
+            position: absolute;
+            bottom: 12vh; /* Positioned above the footer nav area */
+            left: 8vw;    /* Aligned with content */
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--nav-gray);
+            font-size: 0.9rem;
+            border-bottom: 1px solid transparent;
+            transition: color 0.3s ease, border-color 0.3s ease;
+            cursor: pointer;
+        }
+        .back-link-corner:hover {
+            color: var(--text-main);
+            border-bottom-color: var(--text-main);
+        }
 
         /* --- RIGHT PANEL --- */
         .display-panel {
@@ -130,7 +150,7 @@
         .slider-wrapper {
             position: relative;
             width: 100%; max-width: 900px;
-            aspect-ratio: 16 / 9; /* Adjust based on your images */
+            aspect-ratio: 16 / 9; 
             max-height: 65vh;
             overflow: hidden;
             box-shadow: 0 15px 30px rgba(0,0,0,0.1);
@@ -149,7 +169,7 @@
             position: absolute; top: 0; left: 0;
             width: 100%; height: 100%;
             overflow: hidden;
-            width: 50%; /* Initial state */
+            width: 75%; /* Initial state: 75% */
             border-right: 2px solid #fff;
         }
         
@@ -166,7 +186,7 @@
             z-index: 20;
         }
         .slider-handle::after {
-            content: '\2194'; /* Left-Right Arrow */
+            content: '\2194'; 
             color: var(--text-main); font-size: 1.2rem;
         }
 
@@ -233,6 +253,7 @@
             .content-section.active { display: flex; }
             .gallery-grid { flex-direction: column; }
             .thumb-container { width: 100%; height: 250px; }
+            .back-link-corner { position: static; margin-top: 40px; display: inline-block; }
         }
 
     </style>
@@ -258,6 +279,8 @@
                 <a class="toggle-link" onclick="switchSection('plans')">Design Plans</a>
                 <a class="toggle-link" onclick="switchSection('construction')">Construction Photos</a>
             </div>
+
+            <a href="bass_rocks.html" class="back-link-corner">&#8592; Back to Project</a>
         </div>
 
         <div class="display-panel">
@@ -310,11 +333,11 @@
 
             <div id="section-construction" class="content-section">
                 <div class="gallery-grid">
-                    <div class="thumb-container" onclick="openLightbox('Projects/Bass_Rocks/BR_Hole_07_Construction (1).JPG')">
-                        <img src="Projects/Bass_Rocks/BR_Hole_07_Construction (1).JPG" alt="Construction 1">
+                    <div class="thumb-container" onclick="openLightbox('Projects/Bass_Rocks/BR_Hole_07_Construction (1).jpg')">
+                        <img src="Projects/Bass_Rocks/BR_Hole_07_Construction (1).jpg" alt="Construction 1">
                     </div>
-                    <div class="thumb-container" onclick="openLightbox('Projects/Bass_Rocks/BR_Hole_07_Construction (2).JPG')">
-                        <img src="Projects/Bass_Rocks/BR_Hole_07_Construction (2).JPG" alt="Construction 2">
+                    <div class="thumb-container" onclick="openLightbox('Projects/Bass_Rocks/BR_Hole_07_Construction (2).jpg')">
+                        <img src="Projects/Bass_Rocks/BR_Hole_07_Construction (2).jpg" alt="Construction 2">
                     </div>
                 </div>
             </div>
@@ -386,7 +409,6 @@
                     slider.style.display = 'flex';
                     nextBtn.classList.add('hidden');
                     backBtn.classList.remove('hidden');
-                    // Recalculate slider width in case of resize
                     updateSliderWidth(); 
                 } else {
                     sheet.style.display = 'flex';
@@ -434,8 +456,7 @@
             overlay.style.width = percentage + "%";
             handle.style.left = percentage + "%";
 
-            // Tag Logic:
-            // > 50% means Before Image (Overlay) covers more than half
+            // Tag Logic
             if (percentage > 50) {
                 tagBefore.classList.add('tag-visible');
                 tagProposed.classList.remove('tag-visible');
@@ -461,12 +482,13 @@
             setSliderPosition(e.touches[0].clientX);
         });
 
-        // Init Slider width on load
+        // Init Slider width and position
         window.addEventListener('resize', updateSliderWidth);
-        // Set initial state (50%)
         window.onload = () => {
              updateSliderWidth();
-             setSliderPosition(sliderWrapper.getBoundingClientRect().width / 2 + sliderWrapper.getBoundingClientRect().left);
+             // Set slider to 75% initially (mostly Before image)
+             const initialPos = sliderWrapper.getBoundingClientRect().width * 0.75 + sliderWrapper.getBoundingClientRect().left;
+             setSliderPosition(initialPos);
         };
 
         // 5. Lightbox Logic
