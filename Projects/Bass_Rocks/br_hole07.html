@@ -130,9 +130,11 @@
         /* --- PLANS SUB-NAVIGATION --- */
         .plans-nav-container {
             margin-top: 15px;
-            width: 100%; max-width: 800px;
-            display: flex; justify-content: flex-end; /* Aligns to right of center */
-            padding-right: 10%; /* Adjust to position "just right of center" */
+            width: 100%; max-width: 900px; /* Aligns width with slider max-width */
+            display: flex; 
+            justify-content: center; /* Centers items horizontally */
+            align-items: center;
+            gap: 60px; /* Space between buttons around the center */
             min-height: 30px;
         }
 
@@ -142,6 +144,9 @@
             transition: color 0.3s ease, opacity 0.3s ease;
             display: flex; align-items: center; gap: 8px;
             user-select: none;
+            /* Ensure buttons don't jump around */
+            min-width: 80px; 
+            justify-content: center;
         }
         .plans-nav-btn:hover { color: var(--text-main); }
         .plans-nav-btn.hidden { opacity: 0; pointer-events: none; }
@@ -169,13 +174,14 @@
             position: absolute; top: 0; left: 0;
             width: 100%; height: 100%;
             overflow: hidden;
-            width: 75%; /* Initial state: 75% */
+            width: 75%; /* Initial state matched in JS */
             border-right: 2px solid #fff;
         }
         
         /* Drag Handle */
         .slider-handle {
-            position: absolute; top: 50%; left: 50%;
+            position: absolute; top: 50%; 
+            left: 75%; /* Match the initial width of img-overlay */
             transform: translate(-50%, -50%);
             width: 40px; height: 40px;
             background: rgba(255,255,255,0.9);
@@ -202,7 +208,7 @@
             transition: opacity 0.4s ease;
             opacity: 0;
         }
-        .tag-left { left: 20px; }
+        .tag-left { left: 20px; opacity: 1; /* Default visible since overlay is 75% */ }
         .tag-right { right: 20px; }
         .tag-visible { opacity: 1; }
 
@@ -443,15 +449,11 @@
             overlayImg.style.width = sliderWrapper.offsetWidth + 'px'; 
         }
 
-        function setSliderPosition(x) {
-            const rect = sliderWrapper.getBoundingClientRect();
-            let pos = x - rect.left;
-            
-            // Bounds
-            if (pos < 0) pos = 0;
-            if (pos > rect.width) pos = rect.width;
-
-            const percentage = (pos / rect.width) * 100;
+        // New function to strictly set position by percentage
+        function updateSliderPercentage(percentage) {
+            // Clamp 0-100
+            if (percentage < 0) percentage = 0;
+            if (percentage > 100) percentage = 100;
 
             overlay.style.width = percentage + "%";
             handle.style.left = percentage + "%";
@@ -466,12 +468,20 @@
             }
         }
 
+        function handleDrag(clientX) {
+            const rect = sliderWrapper.getBoundingClientRect();
+            let pos = clientX - rect.left;
+            
+            let percentage = (pos / rect.width) * 100;
+            updateSliderPercentage(percentage);
+        }
+
         // Mouse Events
         handle.addEventListener('mousedown', () => isDragging = true);
         window.addEventListener('mouseup', () => isDragging = false);
         window.addEventListener('mousemove', (e) => {
             if (!isDragging) return;
-            setSliderPosition(e.clientX);
+            handleDrag(e.clientX);
         });
 
         // Touch Events
@@ -479,16 +489,15 @@
         window.addEventListener('touchend', () => isDragging = false);
         window.addEventListener('touchmove', (e) => {
             if (!isDragging) return;
-            setSliderPosition(e.touches[0].clientX);
+            handleDrag(e.touches[0].clientX);
         });
 
-        // Init Slider width and position
+        // Init
         window.addEventListener('resize', updateSliderWidth);
         window.onload = () => {
              updateSliderWidth();
-             // Set slider to 75% initially (mostly Before image)
-             const initialPos = sliderWrapper.getBoundingClientRect().width * 0.75 + sliderWrapper.getBoundingClientRect().left;
-             setSliderPosition(initialPos);
+             // Explicitly set to 75% on load to match CSS
+             updateSliderPercentage(75);
         };
 
         // 5. Lightbox Logic
