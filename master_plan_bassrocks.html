@@ -29,7 +29,7 @@
             background-color: var(--bg-color);
             color: var(--text-main);
             font-family: 'Barlow Semi Condensed', sans-serif;
-            height: 200vh; /* Scrollable height to trigger the switch */
+            height: 150vh; /* Reduced height as transition is now faster */
             overflow-x: hidden;
             width: 100vw;
         }
@@ -48,7 +48,6 @@
             pointer-events: none;
         }
 
-        /* --- FIXED PAGE TITLE --- */
         .fixed-page-title {
             position: fixed;
             top: 40px;
@@ -63,7 +62,6 @@
             pointer-events: none; 
         }
 
-        /* --- SECTIONS (FIXED) --- */
         .full-screen-section {
             position: fixed;
             top: 0;
@@ -77,38 +75,32 @@
             padding: 100px 5% 40px 5%; 
         }
 
-        /* --- TRANSITION LOGIC --- */
+        /* --- SNAPPY TRANSITION LOGIC --- */
         
-        /* Default State (Top of Page): Video Visible, Plan Hidden */
         #video-section {
             opacity: 1;
             pointer-events: auto;
             z-index: 10;
-            /* When returning to video: Delay fade-in until plan is gone */
-            transition: opacity 1.5s ease 1.5s; 
+            transition: opacity 0.6s ease; /* Faster transition, no delay */
         }
 
         #plan-section {
             opacity: 0;
             pointer-events: none;
             z-index: 5;
-            /* When leaving plan: Fade out immediately */
-            transition: opacity 1.5s ease 0s;
+            transition: opacity 0.6s ease; /* Faster transition, no delay */
         }
 
-        /* Active State (Scrolled Down): Video Hidden, Plan Visible */
         body.show-plan #video-section {
             opacity: 0;
             pointer-events: none;
-            /* When leaving video: Fade out immediately */
-            transition: opacity 1.5s ease 0s;
+            transition: opacity 0.6s ease;
         }
 
         body.show-plan #plan-section {
             opacity: 1;
             pointer-events: auto;
-            /* When entering plan: Delay fade-in until video is gone */
-            transition: opacity 1.5s ease 1.5s;
+            transition: opacity 0.6s ease;
         }
 
         /* --- VIDEO CONTAINER --- */
@@ -171,7 +163,6 @@
             margin-bottom: 40px;
         }
 
-        /* --- SUB-NAVIGATION --- */
         .sub-nav-container {
             display: flex;
             justify-content: center;
@@ -196,7 +187,6 @@
             border-bottom-color: var(--nav-gray);
         }
 
-        /* --- FIXED MAIN NAV --- */
         .fixed-nav-container {
             position: fixed;
             bottom: 40px;
@@ -233,7 +223,6 @@
             font-weight: var(--akrobat-light);
         }
 
-        /* RESPONSIVE */
         @media (max-width: 900px) {
             .fixed-page-title { font-size: 1.5rem; top: 30px; }
             .full-screen-section { padding-top: 80px; }
@@ -254,7 +243,8 @@
     <div class="full-screen-section" id="video-section">
         <div class="video-container">
             <iframe 
-                src="https://www.youtube.com/embed/Ag653DcvD6U" 
+                id="promo-video"
+                src="https://www.youtube.com/embed/Ag653DcvD6U?enablejsapi=1" 
                 title="Bass Rocks Master Plan Video" 
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
                 referrerpolicy="no-referrer-when-downgrade"
@@ -293,6 +283,8 @@
     </div>
 
     <script>
+        const videoIframe = document.getElementById('promo-video');
+
         // 1. Navigation Helper
         function navigateTo(e, sectionId) {
             e.preventDefault(); 
@@ -300,23 +292,28 @@
             window.location.href = 'index.html';
         }
 
-        // 2. Threshold Class Toggle Logic
+        // 2. Faster Threshold and Video Pause Logic
         window.addEventListener('scroll', () => {
             const scrollY = window.scrollY;
-            const windowHeight = window.innerHeight;
             
-            // Calculate progress (0 to 1)
-            const progress = scrollY / windowHeight; 
+            // Reduced threshold: triggers after 80px of scroll
+            const threshold = 80; 
             
-            // If scrolled past 50%, add class to body
-            if (progress > 0.5) {
-                document.body.classList.add('show-plan');
+            if (scrollY > threshold) {
+                if (!document.body.classList.contains('show-plan')) {
+                    document.body.classList.add('show-plan');
+                    // Send pause command to YouTube Iframe
+                    videoIframe.contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*');
+                }
             } else {
-                document.body.classList.remove('show-plan');
+                if (document.body.classList.contains('show-plan')) {
+                    document.body.classList.remove('show-plan');
+                    // Optional: Resume video when scrolling back to top
+                    // videoIframe.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
+                }
             }
         });
     </script>
 
 </body>
-
 </html>
